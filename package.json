@@ -1,0 +1,17 @@
+{
+  "name": "nojs-fallback",
+  "version": "0.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node nojs-fallback.js"
+  },
+  "author": "",
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "phantom": "~0.5.2",
+    "wd": "~0.1.4",
+    "cheerio": "~0.12.2"
+  }
+}
