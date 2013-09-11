@@ -14,14 +14,16 @@ var page = driver
     return driver.get(target);
   });
 
-var loop = function (promise, fn) {
+var loop = function (promise, fn, check) {
   return promise.then(fn).then(function (result) {
-    return result !== "true" ? loop(promise, fn) : result;
+    return check(result) ? result : loop(promise, fn);
   })
 };
 
 loop(page, function () {
   return driver.getLocalStorageKey('scrape-away');
+}, function(val) {
+  return val === "true";
 })
   .then(function () {
     return driver.source();
