@@ -1,5 +1,6 @@
-var webdriverInterface = require('./lib/webdriver-interface.js'),
-  cheerio = require('cheerio');
+var http = require('http'),
+  cheerio = require('cheerio'),
+  webdriverInterface = require('./lib/webdriver-interface.js');
 
 var target = process.env.TARGET;
 
@@ -7,14 +8,17 @@ if (!target) {
   console.error("No target set. `heroku config:add TARGET=http://t.com`");
 }
 
-var webdriver = webdriverInterface('localhost', 8990, target);
+var fakeBrowser = webdriverInterface('localhost', 8990, target);
 
 var app = http.createServer(function (req, resp) {
-  webdriver.loadPage(req.url).then(function (html) {
-    var parsed = cheerio.load(source);
+  console.log("Loading: " + req.url);
+  var startedAt = new Date();
+  fakeBrowser.loadPage(req.url).then(function (html) {
+    var parsed = cheerio.load(html);
     parsed('noscript').remove();
     resp.writeHead(200, {'Content-Type': 'text/html'});
     resp.end(parsed.html());
+    console.log((new Date() - startedAt) / 1000 + " seconds");
   });
 });
 
