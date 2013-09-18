@@ -1,2 +1,2 @@
 phantom: phantomjs --webdriver=8990
-web: node nojs-fallback
+web: node nojs-fallback.js
